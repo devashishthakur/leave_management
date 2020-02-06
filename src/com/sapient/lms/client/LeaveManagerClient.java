@@ -1,6 +1,11 @@
 package com.sapient.lms.client;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 import com.sapient.lms.model.Employee;
 import com.sapient.lms.model.LeaveDetail;
@@ -13,15 +18,16 @@ public class LeaveManagerClient {
 		LeaveDetail leaveDetail = new LeaveDetail(20);
 		Employee employee1 = new Employee(0,"Devashish Thakur","Delivery",leaveDetail);
 		Employee employee2 = new Employee(1,"Virat Kohli","Cricket",leaveDetail);
-		
-		Employee[] employeeList = {employee1,employee2};
-		
-		
+				
+		HashMap<Integer,Employee> hm = new HashMap<Integer,Employee>();
+		hm.put(100, employee1);
+		hm.put(101, employee2);
+
 		Scanner ob = new Scanner(System.in);
 		System.out.println("Enter Employee ID - ");
 		int employeeId = ob.nextInt();
 		
-		Employee employee = employeeList[employeeId];
+		Employee employee = hm.get(employeeId);
 		LeaveManager leaveManager = new LeaveManager(employee);
 
 		
@@ -30,7 +36,7 @@ public class LeaveManagerClient {
 			
 			System.out.println("Welcome "+employee.getName());
 			
-			System.out.println("1. View Leave Balance\n2. Apply For Leave\n3.Update Leaves");
+			System.out.println("1. View Leave Balance\n2. Apply For Leave\n3. Update Leaves");
 			
 			int inputFromUser = ob.nextInt();
 			
@@ -44,7 +50,21 @@ public class LeaveManagerClient {
 				int noOfLeaves = ob.nextInt();
 				if(noOfLeaves < leaveManager.viewLeaveBalance())
 				{
-					leaveManager.applyForLeave(noOfLeaves);
+					System.out.println("Enter Start Date in format DD/MM/YY");
+					String start = ob.next();
+					System.out.println("Enter End Date in format DD/MM/YY");
+					String end = ob.next();
+					
+					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+					try{
+						Date startDate = dateFormat.parse(start);
+						Date endDate = dateFormat.parse(end);
+						leaveManager.applyForLeave(startDate,endDate,noOfLeaves);
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
 				}
 				else
 				{

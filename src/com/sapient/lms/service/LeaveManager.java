@@ -1,5 +1,7 @@
 package com.sapient.lms.service;
 
+import java.util.Date;
+
 import com.sapient.lms.model.Employee;
 
 public class LeaveManager {
@@ -11,8 +13,9 @@ public class LeaveManager {
 		this.numberOfLeaves = employee.getLeaveDetail().getNoOfLeaves();
 	}
 	
-	public void applyForLeave(int numberOfLeaves)
+	public void applyForLeave(Date from, Date to, int numberOfLeaves)
 	{
+		System.out.println("You applied for leave from "+from.toString()+ " to "+to.toString());
 		this.numberOfLeaves = this.numberOfLeaves - numberOfLeaves;
 	}
 	
